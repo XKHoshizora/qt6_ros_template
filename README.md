@@ -1,4 +1,4 @@
-# Qt6 ROS 模板
+# Qt6 ROS Template
 
 [中文](README_zh.md) | [English](README_en.md)
 

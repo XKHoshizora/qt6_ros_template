@@ -1,0 +1,4 @@
+<!-- launch/demo.launch -->
+<launch>
+  <node pkg="qt6_ros_template" type="qt6_ros_template_node" name="qt6_ros_template_node" output="screen"/>
+</launch>

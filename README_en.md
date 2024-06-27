@@ -167,6 +167,10 @@ qt6_ros_template/
 ├── package.xml
 ├── include/
 │   └── mainwindow.h
+├── resources/
+│   ├── images/
+│   │   └── icon.png
+│   └── resource.qrc
 ├── src/
 │   ├── main.cpp
 │   ├── mainwindow.cpp

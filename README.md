@@ -1,7 +1,7 @@
 # Qt6 ROS Template
 
 ## 项目简介
-**Qt6-ROS-Template** 是一个基于 Qt6 构建的 ROS Noetic 人机交互界面模板，旨在为开发者提供一个快速入门的框架，方便用户在此基础上进行重命名和重构。本项目借鉴了 Qt5 版本的模板，并进行了改进和优化，以适应 Qt6 的新特性和功能。
+**Qt6-ROS-Template** 是一个基于 Qt6 构建的 ROS Noetic 人机交互界面模板，旨在为开发者提供一个快速入门的框架，方便用户在此基础上进行重命名和重构。本项目借鉴了 Qt5 版本的 [ros_qt_demo](https://github.com/XKHoshizora/ros_qt_demo) 项目模板，并进行了改进和优化，以适应 Qt6 的新特性和功能。
 
 ## 安装依赖
 1. 安装 ROS Noetic:

@@ -166,15 +166,19 @@ qt6_ros_template/
 ├── CMakeLists.txt
 ├── package.xml
 ├── include/
+│   ├── qt6_ros_template/
 │   └── mainwindow.h
+├── msg/
 ├── resources/
 │   ├── images/
 │   │   └── icon.png
 │   └── resource.qrc
+├── scripts/
 ├── src/
 │   ├── main.cpp
 │   ├── mainwindow.cpp
 │   └── qt6_ros_template_node.cpp
+├── srv/
 ├── ui/
 │   └── mainwindow.ui
 └── launch/

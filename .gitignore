@@ -1,1 +1,47 @@
-.Ds_Store
+# ROS specific ignores
+devel/
+log/
+build/
+
+# Qt specific ignores
+*.user
+*.autosave
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Python byte code
+*.pyc
+
+# Temporary files
+*~
+
+# macOS specific
+.DS_Store

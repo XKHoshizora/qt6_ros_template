@@ -12,6 +12,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# 设置编译选项
+# Set compilation options
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 # 启用 Qt 的自动化工具
 # Enable Qt's automation tools
 set(CMAKE_AUTOUIC ON)
@@ -22,6 +28,7 @@ set(CMAKE_AUTORCC ON)
 # Set the search path for Qt UI files
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/ui)
 
+# [QT_DEPENDENCIES]
 # 查找 Qt 包
 # Find the Qt package
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
@@ -30,10 +37,15 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 # 如果需要添加其他 Qt 模块，在这里添加
 # Add other Qt modules here if needed
 # find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network Multimedia)
+# [END_QT_DEPENDENCIES]
 
 # 检查是否在 ROS 环境中
 # Check if we are in a ROS environment
 if(DEFINED ENV{ROS_DISTRO})
+    set(USE_ROS TRUE)
+    message(STATUS "ROS environment detected. Building with ROS support.")
+
+    # [ROS_DEPENDENCIES]
     # 查找 catkin 包和其他 ROS 依赖
     # Find catkin package and other ROS dependencies
     find_package(catkin REQUIRED COMPONENTS
@@ -45,33 +57,33 @@ if(DEFINED ENV{ROS_DISTRO})
         # Add other ROS dependencies here
     )
 
-    # 包含目录
-    # Include directories
-    include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/ui
-        ${catkin_INCLUDE_DIRS}
-    )
-
     # 声明 catkin 包
     # Declare catkin package
-    catkin_package(
-        CATKIN_DEPENDS roscpp rospy std_msgs
+    catkin_package(CATKIN_DEPENDS
+        roscpp
+        rospy
+        std_msgs
 
         # 在这里添加其他 catkin 依赖
         # Add other catkin dependencies here
     )
-else()
-    # 非 ROS 环境的警告信息
-    # Warning message for non-ROS environment
-    message(WARNING "ROS environment not detected. Building without ROS support.")
 
-    # 非 ROS 环境下的包含目录
-    # Include directories for non-ROS environment
-    include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/ui
-    )
+# [END_ROS_DEPENDENCIES]
+else()
+    set(USE_ROS FALSE)
+    message(WARNING "ROS environment not detected. Building without ROS support.")
+endif()
+
+# 设置包含目录
+# Set include directories
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/ui
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+if(USE_ROS)
+    include_directories(${catkin_INCLUDE_DIRS})
 endif()
 
 # 设置项目源文件
@@ -94,28 +106,41 @@ set(PROJECT_UI
     # Add other UI files here
 )
 
-# 根据 Qt 版本添加可执行文件
-# Add executable based on Qt version
+# 收集所有资源文件
+# Collect all resource files
+file(GLOB_RECURSE PROJECT_RESOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.qrc
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/*.jpg
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/*.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/*.svg
+)
+
+# 添加可执行文件
+# Add executable
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ${PROJECT_UI}
+        ${PROJECT_RESOURCES}
     )
 else()
     if(ANDROID)
         add_library(${PROJECT_NAME} SHARED
             ${PROJECT_SOURCES}
             ${PROJECT_UI}
+            ${PROJECT_RESOURCES}
         )
     else()
         add_executable(${PROJECT_NAME}
             ${PROJECT_SOURCES}
             ${PROJECT_UI}
+            ${PROJECT_RESOURCES}
         )
     endif()
 endif()
 
+# [QT_LINK_LIBRARIES]
 # 链接 Qt 库
 # Link Qt libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
@@ -123,10 +148,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 # 如果添加了其他 Qt 模块，在这里链接
 # If you added other Qt modules, link them here
 # target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Multimedia)
-
-# ROS 特定的设置
-# ROS-specific settings
-if(DEFINED ENV{ROS_DISTRO})
+# [END_QT_LINK_LIBRARIES]
+if(USE_ROS)
     # 链接 ROS 库
     # Link ROS libraries
     target_link_libraries(${PROJECT_NAME} PRIVATE ${catkin_LIBRARIES})
@@ -141,7 +164,7 @@ if(DEFINED ENV{ROS_DISTRO})
 
     # 安装目标
     # Install targets
-    install(TARGETS ${PROJECT_NAME}
+    install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
     )
 

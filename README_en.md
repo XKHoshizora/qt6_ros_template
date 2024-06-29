@@ -64,7 +64,7 @@ There are two methods to install ROS Noetic:
    git clone https://github.com/XKHoshizora/auto-ros-installer.git
    cd auto-ros-installer
    ```
-   For detailed installation instructions, please refer to the project homepage.
+   For detailed installation instructions, please refer to the project [homepage](https://github.com/XKHoshizora/auto-ros-installer).
 
 ### Installing Qt6
 
@@ -96,6 +96,7 @@ It is recommended to use the official Qt installer to install Qt6:
 
    ```shell
    #!/bin/sh
+
    export QT_HOME=/home/<user>/Qt/Tools/QtCreator/bin
    $QT_HOME/qtcreator $*
    ```

@@ -64,7 +64,7 @@
    git clone https://github.com/XKHoshizora/auto-ros-installer.git
    cd auto-ros-installer
    ```
-   详细安装方法请查看项目主页的说明。
+   详细安装方法请查看[项目主页](https://github.com/XKHoshizora/auto-ros-installer)的说明。
 
 ### 安装 Qt6
 
@@ -96,6 +96,7 @@
 
    ```shell
    #!/bin/sh
+
    export QT_HOME=/home/<user>/Qt/Tools/QtCreator/bin
    $QT_HOME/qtcreator $*
    ```

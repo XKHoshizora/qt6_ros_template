@@ -34,6 +34,9 @@
 
 - 集成 Qt6 和 ROS Noetic，提供现代化的 UI 设计和强大的机器人开发能力
 - 双重编译支持：兼容 ROS 的 `catkin_make` 和 Qt Creator 的构建系统
+  - 可以在只有 ROS 的环境下使用 `catkin_make` 进行编译
+  - 可以在只有 Qt6 的环境下使用 Qt Creator 编译并打开项目
+  - 可以在 ROS 和 Qt6 环境下同时使用 `catkin_make` 或 Qt Creator 对项目进行编译
 - 无需复杂配置，可直接在 Qt Creator 中打开项目进行开发
 - 预配置的 CMakeLists.txt，简化了 Qt 和 ROS 的集成过程
 - 包含基本的 ROS 节点和 Qt 主窗口实现，可作为开发起点
@@ -54,19 +57,14 @@
 
 有两种方法可以安装 ROS Noetic：
 
-1. 使用官方安装脚本：
-
-   ```bash
-   sudo apt update
-   sudo apt install ros-noetic-desktop-full
-   ```
+1. 根据[官方指南](https://wiki.ros.org/noetic/Installation/Ubuntu)进行安装
 
 2. 使用 Auto ROS Installer（推荐）：
    ```bash
    git clone https://github.com/XKHoshizora/auto-ros-installer.git
    cd auto-ros-installer
-   # 按照 README.md 的说明进行安装
    ```
+   详细安装方法请查看项目主页的说明。
 
 ### 安装 Qt6
 
@@ -88,12 +86,13 @@
    ```
 
 4. 配置 Qt Creator 快捷方式：
+   使用以下命令创建并打开 `qtcreator` 文件
 
    ```bash
    sudo nano /usr/bin/qtcreator
    ```
 
-   添加以下内容：
+   向 `qtcreator` 文件中添加以下内容：
 
    ```shell
    #!/bin/sh
@@ -101,65 +100,106 @@
    $QT_HOME/qtcreator $*
    ```
 
-   设置权限：
+5. 为 `qtcreator` 文件添加可执行权限：
 
    ```bash
-   sudo chmod a+x /usr/bin/qtcreator
+   sudo chmod a+x /usr/bin/
    ```
 
-### 安装其他依赖
+6. 启动 Qt Creator：
 
-如果在运行 Qt Creator 时遇到问题，请安装以下依赖：
+   ```bash
+   qtcreator
+   ```
 
-```bash
-sudo apt install libxcb-xinerama0 libxcb-xinerama0-dev libxcb-cursor0
-```
+7. 安装其他依赖
+
+   如果在运行 Qt Creator 时遇到问题，请安装以下依赖：
+
+   ```bash
+   sudo apt install libxcb-xinerama0 libxcb-xinerama0-dev libxcb-cursor0
+   ```
 
 ## 项目设置
 
 ### 创建工作空间
 
 ```bash
-mkdir -p ~/qt6_ros_template_ws/src
-cd ~/qt6_ros_template_ws/src
+mkdir -p ~/qt6_ws/src
+cd ~/qt6_ws/src
 ```
 
 ### 克隆项目
 
 ```bash
 git clone https://github.com/XKHoshizora/qt6_ros_template.git
-cd qt6_ros_template
 ```
 
 ### 构建项目
 
-1. 使用 catkin_make（ROS 环境）：
+#### 单独的 ROS 环境中
+
+在你的工作空间内执行以下命令即可编译该功能包：
+
+```bash
+cd ~/qt6_ws
+catkin_make
+```
+
+#### 在单独的 Qt6 环境中
+
+1. 打开 Qt Creator
+2. 选择 "File" > "Open File or Project"
+3. 导航到 `~/qt6_ws/src/qt6_ros_template` 目录中，选择 `CMakeLists.txt` 文件并打开
+4. 配置并打开项目，左侧可以正常显示项目文件，即说明编译成功。若编译失败，则只会显示一个 `CMakeLists.txt` 文件。
+
+#### 在 ROS 和 Qt6 共存的环境中
+
+1. 在你的工作空间内执行以下命令即可编译该功能包：
 
    ```bash
-   cd ~/qt6_ros_template_ws
+   cd ~/qt6_ws
    catkin_make
    ```
 
-2. 使用 Qt Creator：
-   - 打开 Qt Creator
-   - 选择 "File" > "Open File or Project"
-   - 导航到 `~/qt6_ros_template_ws/src/qt6_ros_template` 并选择 `CMakeLists.txt` 文件
-   - 配置项目并点击 "Build"
+2. 需要在 Qt Creator 中打开项目进行开发时，首先要通过第一步的编译。接着按照以下步骤进行操作：
+   1. 打开 Qt Creator
+   2. 选择 "File" > "Open File or Project"
+   3. 导航到 `~/qt6_ws/src` 并选择 `CMakeLists.txt` 文件(**注意，是选择工作空间下的 `CMakeLists.txt` 文件，而不是功能包内的文件**)
+   4. 进入到配置页面后，点击 `Import Build From...` 选项右侧的 `Details` 按钮。点击 `Browse...` 按钮找到 `qt_ws/build` 目录并点击右上角的 `Open` 按钮打开。点击 `Import` 按钮完成导入。
+   5. 勾选 `Imported Kit` 和 `Build` 选项，并去掉除此之外的所有选项。
+   6. 点击右下角的 `Configure Project` 按钮完成配置并开始编项目。
+   7. 左侧可以正常显示项目文件，即说明编译成功。若编译失败，则只会显示一个 `CMakeLists.txt` 文件。
 
 ## 运行项目
 
-1. 在 ROS 环境中运行：
+### 单独的 ROS 环境中
 
-   ```bash
-   source ~/qt6_ros_template_ws/devel/setup.bash
-   roslaunch qt6_ros_template demo.launch
-   ```
+首先确保已经根据上面的步骤完成了编译。然后在工作空间下执行以下命令：
 
-2. 在 Qt Creator 中运行：
-   - 在 Qt Creator 中打开项目
-   - 点击 "Run" 按钮或按 Ctrl+R
+```bash
+source ~/qt6_ws/devel/setup.bash
+roslaunch qt6_ros_template demo.launch
+```
+
+### 在单独的 Qt6 环境中
+
+通过 Qt Creator 编译并打开项目后，点击左侧绿色的 `Run` 按钮，或使用 `Ctrl + R` 快捷键运行。
+
+### 在 ROS 和 Qt6 共存的环境中
+
+首先确保已经根据上面的步骤完成了编译。然后在工作空间下执行以下命令：
+
+```bash
+source ~/qt6_ws/devel/setup.bash
+roslaunch qt6_ros_template demo.launch
+```
+
+或通过 Qt Creator 编译并打开项目后，点击左侧绿色的 `Run` 按钮，或使用 `Ctrl + R` 快捷键运行。
 
 ## 项目结构
+
+本项目使用了标准的 CMake 构建系统，并遵循了 Qt 项目的目录结构。
 
 ```
 qt6_ros_template/

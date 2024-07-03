@@ -68,13 +68,40 @@
                  <string>Ros Master</string>
                 </property>
                 <layout class="QGridLayout" name="gridLayout">
-                 <item row="7" column="0" colspan="2">
-                  <widget class="QCheckBox" name="checkbox_remember_settings">
+                 <item row="3" column="0" colspan="2">
+                  <widget class="QLineEdit" name="line_edit_host">
+                   <property name="text">
+                    <string>192.168.1.67</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="2">
+                  <widget class="QLineEdit" name="line_edit_master">
+                   <property name="text">
+                    <string>http://192.168.1.2:11311/</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_3">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <property name="text">
+                    <string>Ros Hostname</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0" colspan="2">
+                  <widget class="QCheckBox" name="checkbox_use_environment">
                    <property name="layoutDirection">
                     <enum>Qt::RightToLeft</enum>
                    </property>
                    <property name="text">
-                    <string>Remember settings on startup</string>
+                    <string>Use environment variables</string>
                    </property>
                   </widget>
                  </item>
@@ -87,37 +114,7 @@
                     <enum>QFrame::Raised</enum>
                    </property>
                    <property name="text">
-                    <string>Ros IP</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="9" column="0">
-                  <spacer name="horizontalSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>170</width>
-                     <height>21</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="6" column="0" colspan="2">
-                  <widget class="QCheckBox" name="checkbox_use_environment">
-                   <property name="layoutDirection">
-                    <enum>Qt::RightToLeft</enum>
-                   </property>
-                   <property name="text">
-                    <string>Use environment variables</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0" colspan="2">
-                  <widget class="QLineEdit" name="line_edit_master">
-                   <property name="text">
-                    <string>http://192.168.1.2:11311/</string>
+                    <string>ROS IP</string>
                    </property>
                   </widget>
                  </item>
@@ -130,11 +127,45 @@
                     <enum>QFrame::Raised</enum>
                    </property>
                    <property name="text">
-                    <string>Ros Master Url</string>
+                    <string>ROS Master Url</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="0" colspan="2">
+                 <item row="9" column="0">
+                  <widget class="QLabel" name="label_ros_status">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;ROS Status&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QPushButton" name="button_change_topic">
+                   <property name="text">
+                    <string>Change Topic</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="14" column="1">
+                  <widget class="QPushButton" name="button_publish">
+                   <property name="text">
+                    <string>Publish</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="0">
+                  <spacer name="verticalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="5" column="0">
                   <widget class="QLineEdit" name="line_edit_topic">
                    <property name="enabled">
                     <bool>false</bool>
@@ -144,12 +175,8 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0" colspan="2">
-                  <widget class="QLineEdit" name="line_edit_host">
-                   <property name="text">
-                    <string>192.168.1.67</string>
-                   </property>
-                  </widget>
+                 <item row="14" column="0">
+                  <widget class="QLineEdit" name="line_edit_message"/>
                  </item>
                  <item row="9" column="1">
                   <widget class="QPushButton" name="button_connect">
@@ -173,31 +200,15 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="0">
-                  <widget class="QLabel" name="label_3">
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
+                 <item row="7" column="0" colspan="2">
+                  <widget class="QCheckBox" name="checkbox_remember_settings">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
                    </property>
                    <property name="text">
-                    <string>Ros Hostname</string>
+                    <string>Remember settings on startup</string>
                    </property>
                   </widget>
-                 </item>
-                 <item row="10" column="0">
-                  <spacer name="verticalSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -220,7 +231,7 @@
      <x>0</x>
      <y>0</y>
      <width>890</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

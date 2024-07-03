@@ -1,4 +1,28 @@
-<!-- launch/demo.launch -->
 <launch>
-  <node pkg="qt6_ros_template" type="qt6_ros_template_node" name="qt6_ros_template_node" output="screen"/>
+  <!-- 启动 ROS Master，如果尚未运行 -->
+  <master auto="start"/>
+
+  <!-- 设置 ROS_HOSTNAME 和 ROS_IP 参数 -->
+  <arg name="ros_hostname" default="localhost"/>
+  <arg name="ros_ip" default="127.0.0.1"/>
+  <param name="/ros_hostname" value="$(arg ros_hostname)"/>
+  <param name="/ros_ip" value="$(arg ros_ip)"/>
+
+  <!-- 启动 Qt6 ROS 模板节点 -->
+  <node pkg="qt6_ros_template" type="qt6_ros_template" name="qt6_ros_template" output="screen">
+    <param name="use_environment_variables" value="true"/>
+    <param name="remember_settings" value="false"/>
+  </node>
+
+  <!-- 启动一个简单的发布者节点，用于测试 -->
+  <!-- <node pkg="rostopic" type="rostopic" name="test_publisher" args="pub /test_topic std_msgs/String 'data: Hello from test publisher' -r 1" output="screen"/> -->
+
+  <!-- 启动 rqt_graph 以可视化节点和话题 -->
+  <!-- <node pkg="rqt_graph" type="rqt_graph" name="rqt_graph"/> -->
+
+  <!-- 启动 rviz 以可视化任何sensor_msgs（如果有的话） -->
+  <!-- <node pkg="rviz" type="rviz" name="rviz"/> -->
+
+  <!-- 可选：启动 rosbag 记录所有话题 -->
+  <!-- <node pkg="rosbag" type="record" name="rosbag_record" args="-a -o $(find qt6_ros_template)/bags/qt6_ros_template_demo"/> -->
 </launch>

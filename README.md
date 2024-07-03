@@ -172,31 +172,107 @@ catkin_make
    6. 点击右下角的 `Configure Project` 按钮完成配置并开始编项目。
    7. 左侧可以正常显示项目文件，即说明编译成功。若编译失败，则只会显示一个 `CMakeLists.txt` 文件。
 
-## 运行项目
+## 项目测试
 
-### 单独的 ROS 环境中
+### 运行项目
+
+#### 单独的 ROS 环境中
 
 首先确保已经根据上面的步骤完成了编译。然后在工作空间下执行以下命令：
 
 ```bash
 source ~/qt6_ws/devel/setup.bash
 roslaunch qt6_ros_template demo.launch
+
+# 如果您想指定不同的 ROS_HOSTNAME 或 ROS_IP，可以这样使用：
+roslaunch qt6_ros_template demo.launch ros_hostname:=your_hostname ros_ip:=your_ip
 ```
 
-### 在单独的 Qt6 环境中
+#### 在单独的 Qt6 环境中
 
 通过 Qt Creator 编译并打开项目后，点击左侧绿色的 `Run` 按钮，或使用 `Ctrl + R` 快捷键运行。
 
-### 在 ROS 和 Qt6 共存的环境中
+#### 在 ROS 和 Qt6 共存的环境中
 
 首先确保已经根据上面的步骤完成了编译。然后在工作空间下执行以下命令：
 
 ```bash
 source ~/qt6_ws/devel/setup.bash
 roslaunch qt6_ros_template demo.launch
+
+# 如果您想指定不同的 ROS_HOSTNAME 或 ROS_IP，可以这样使用：
+roslaunch qt6_ros_template demo.launch ros_hostname:=your_hostname ros_ip:=your_ip
 ```
 
 或通过 Qt Creator 编译并打开项目后，点击左侧绿色的 `Run` 按钮，或使用 `Ctrl + R` 快捷键运行。
+
+### 功能测试
+
+测试时推荐使用 `rosrun` 命令进行测试，此时需要提前在新的终端使用 `roscore` 命令运行 `ros master`，然后在另一个新的终端输入以下命令来启动 ROS 节点：
+
+```bash
+rosrun qt6_ros_template qt6_ros_template_node
+```
+
+节点成功运行之后，按照以下步骤测试应用程序的各项功能：
+
+1. **连接到 ROS**
+
+   - 点击应用程序中的"Connect"按钮。
+   - 验证"ROS Status"标签是否变为绿色并显示"Connected"。
+
+2. **更改话题**
+
+   - 在"Change Topic"输入框中输入新的话题名称（例如"/test_topic"）。
+   - 点击"Change Topic"按钮。
+
+3. **发布消息**
+
+   - 在"Publish"输入框中输入一条消息。
+   - 点击"Publish"按钮。
+   - 在新终端中使用以下命令验证已发布的消息：
+     ```
+     rostopic echo /test_topic
+     ```
+
+4. **订阅消息**
+
+   - 在新终端中，向已订阅的话题发布一条消息：
+     ```
+     rostopic pub /test_topic std_msgs/String "data: '来自命令行的问候'" -1
+     ```
+   - 验证消息是否出现在应用程序的日志视图中。
+
+5. **测试断开连接**
+
+   - 点击"Disconnect"按钮。
+   - 验证"ROS 状态"标签是否变为红色并显示"Disconnected"。
+   - 尝试发布消息并验证是否失败。
+
+6. **测试 ROS Master 故障**
+
+   - 使用应用程序连接到 ROS。
+   - 在运行 roscore 的终端中，使用 Ctrl+C 停止它。
+   - 观察应用程序的日志视图和控制台输出是否有断开连接的消息。
+
+7. **环境变量使用**
+
+   - 勾选"Use environment variables"复选框。
+   - 验证主 URL 和 ROS IP 字段是否从环境变量中填充。
+
+8. **设置的保存和加载**
+   - 在应用程序中更改一些设置。
+   - 关闭应用程序并重新打开。
+   - 验证设置是否正确恢复。
+
+### 故障排除
+
+如果遇到任何问题：
+
+1. 确保在启动应用程序之前运行 `roscore`。
+2. 检查您的 ROS 环境变量（`ROS_MASTER_URI` 和 `ROS_IP`）是否正确设置。
+3. 如果在多台机器上运行 ROS，请验证网络连接。
+4. 检查控制台输出和应用程序日志中是否有任何错误消息。
 
 ## 项目结构
 

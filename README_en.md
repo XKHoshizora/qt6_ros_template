@@ -1,6 +1,6 @@
 # Qt6 ROS Template
 
-[中文](README_zh.md) | [English](README_en.md)
+[中文](README.md) | [English](README_en.md)
 
 ## Table of Contents
 

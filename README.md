@@ -345,3 +345,7 @@ qt6_ros_template/
 项目维护者：XKHoshizora - hoshizoranihon@gmail.com
 
 项目链接：[https://github.com/XKHoshizora/qt6_ros_template](https://github.com/XKHoshizora/qt6_ros_template)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=XKHoshizora/qt6_ros_template&type=Date)](https://star-history.com/#XKHoshizora/qt6_ros_template&Date)
